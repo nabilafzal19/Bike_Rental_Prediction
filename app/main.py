@@ -13,7 +13,7 @@ app = FastAPI(
 @app.get("/")
 def root():
     return {
-        "message": "Bike Demand Prediction API"
+        "message": "Bike Demand Prediction API."
     }
 
 
