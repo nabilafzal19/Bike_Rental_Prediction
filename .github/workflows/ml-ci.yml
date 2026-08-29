@@ -9,14 +9,11 @@ on:
     branches:
       - main
 
-
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -34,15 +31,11 @@ jobs:
         run: |
           python -m pytest -v
 
-
   docker:
-
     runs-on: ubuntu-latest
-
     needs: test
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -58,7 +51,7 @@ jobs:
         run: |
           docker build --target production -t bike-demand-api .
 
-    publish:
+  publish:
     runs-on: ubuntu-latest
     needs: docker
 
