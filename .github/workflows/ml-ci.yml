@@ -65,8 +65,9 @@ jobs:
     needs: docker
 
     permissions:
+      id-token: write
       contents: read
-      packages: write
+      packages: write  
 
     steps:
 
@@ -89,3 +90,13 @@ jobs:
       - name: Push image
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/bike-demand-ml:latest
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+        role-to-assume: arn:aws:iam::619071320026:role/bike-demand-ml
+        aws-region: ap-south-1
+
+      - name: Test AWS authentication
+      run: |
+        aws sts get-caller-identity
