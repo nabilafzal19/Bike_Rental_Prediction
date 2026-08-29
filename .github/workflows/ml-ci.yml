@@ -81,10 +81,12 @@ jobs:
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/bike-demand-ml:latest
 
-            - name: Get GitHub OIDC token
-        id: oidc
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::619071320026:role/bike-demand-ml
+          aws-region: ap-south-1
+
+      - name: Test AWS authentication
         run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Repository ID: $GITHUB_REPOSITORY_ID"
-          echo "Repository Owner: $GITHUB_REPOSITORY_OWNER"
-          echo "Ref: $GITHUB_REF"
+          aws sts get-caller-identity
