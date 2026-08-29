@@ -90,3 +90,30 @@ jobs:
       - name: Test AWS authentication
         run: |
           aws sts get-caller-identity
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: publish
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::619071320026:role/bike-demand-ml
+          aws-region: ap-south-1
+
+      - name: Deploy to EC2
+        run: |
+          aws ssm send-command \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=[
+              "docker pull ghcr.io/nabilafzal19/bike-demand-ml:latest",
+              "docker stop bike-demand-api || true",
+              "docker rm bike-demand-api || true",
+              "docker run -d --name bike-demand-api -p 8000:8000 --restart unless-stopped ghcr.io/nabilafzal19/bike-demand-ml:latest"
+            ]'
