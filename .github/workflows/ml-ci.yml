@@ -85,7 +85,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::619071320026:role/bike-demand-ml
-          aws-region: ap-south-1
+          aws-region: us-east-1
 
       - name: Test AWS authentication
         run: |
@@ -104,7 +104,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::619071320026:role/bike-demand-ml
-          aws-region: us-east-1b
+          aws-region: us-east-1
 
       - name: Deploy to EC2
         run: |
