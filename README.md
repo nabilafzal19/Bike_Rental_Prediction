@@ -1,15 +1,220 @@
-Absolutely brother. Here is the **final README only**, with no future-plan section. I've put everything into **one code block**, so you can use the code-block copy button and paste it directly into `README.md`.
+You're absolutely right, brother. That is actually the **most important ML part of the README**, and we should highlight it before the MLOps section.
+
+Our README should explain **what we predicted, what data/features were used, which algorithms we experimented with, their results, and why Random Forest was selected**.
+
+Replace the README with this improved version:
 
 ````markdown
 # 🚲 Bike Demand Prediction API
 
-An end-to-end Machine Learning project that predicts bike rental demand and demonstrates how a trained ML model can be deployed as a production-ready API using FastAPI, Docker, GitHub Actions, GitHub Container Registry, and AWS EC2.
+An end-to-end Machine Learning project that predicts **bike rental demand** based on environmental and seasonal factors.
 
-The project focuses not only on model development but also on testing, containerization, CI/CD, cloud deployment, and production-oriented ML engineering practices.
+The project covers the complete journey from **Machine Learning model development to production deployment**, including model evaluation, API development, automated testing, Docker containerization, CI/CD, GitHub Container Registry, and AWS EC2 deployment.
 
 ---
 
-## 🏗️ Architecture
+## 🎯 Project Objective
+
+The goal of this project is to predict the **number of bike rentals** for a given set of conditions.
+
+The model learns the relationship between factors such as:
+
+- Temperature
+- Humidity
+- Wind speed
+- Weather conditions
+- Season
+- Year
+- Month
+- Hour
+- Working day
+- Holiday
+
+and the number of bikes that are expected to be rented.
+
+### Prediction
+
+The model performs a **regression task** because the target variable is a continuous numerical value representing bike rental demand.
+
+Example:
+
+```text
+Input conditions
+      ↓
+Temperature: 25°C
+Humidity: 60%
+Weather: Clear
+Hour: 18
+Working Day: Yes
+Season: Summer
+      ↓
+Machine Learning Model
+      ↓
+Predicted Bike Demand: 482 bikes
+````
+
+The trained model is exposed through a FastAPI REST API so that predictions can be requested in real time.
+
+---
+
+# 🤖 Machine Learning
+
+## Problem Type
+
+**Supervised Learning → Regression**
+
+The model learns from historical bike rental data where the actual rental count is known.
+
+### Target Variable
+
+```text
+Bike rental demand / rental count
+```
+
+The model predicts the expected number of bike rentals for the supplied conditions.
+
+---
+
+## 🔬 Algorithms Experimented With
+
+Multiple regression algorithms were implemented and evaluated on the same dataset.
+
+### 1. Baseline Model
+
+A simple baseline prediction was established before training ML models.
+
+```text
+Baseline MAE  : 0.9061
+Baseline RMSE : 1.1449
+Baseline R²   : ~0
+```
+
+The baseline provides a reference point to determine whether the ML models are actually learning useful patterns.
+
+---
+
+### 2. Linear Regression
+
+Linear Regression was used as the first ML model and provided a simple interpretable benchmark.
+
+```text
+MAE  : 0.5332
+RMSE : 0.7456
+R²   : 0.5758
+```
+
+Linear Regression significantly improved over the baseline but was unable to capture more complex nonlinear relationships in the data.
+
+---
+
+### 3. Decision Tree Regression
+
+Decision Tree Regression was then implemented to capture nonlinear relationships.
+
+Initial training showed the possibility of overfitting because the tree could achieve almost perfect performance on the training data.
+
+Hyperparameter tuning and validation were performed to control tree depth.
+
+Final results:
+
+```text
+MAE  : 0.4332
+RMSE : 0.6446
+R²   : 0.6829
+```
+
+The Decision Tree performed better than Linear Regression.
+
+---
+
+### 4. Random Forest Regression ⭐
+
+Random Forest Regression was then implemented as an ensemble model consisting of multiple decision trees.
+
+The model was evaluated using cross-validation and different numbers of trees.
+
+The best configuration was:
+
+```text
+n_estimators = 200
+max_depth    = None
+```
+
+Final test results:
+
+```text
+MAE  : 0.3268
+RMSE : 0.5040
+R²   : 0.8062
+```
+
+Random Forest produced the best overall performance among the models tested.
+
+---
+
+## 📊 Model Comparison
+
+| Model             |        MAE |       RMSE |         R² |
+| ----------------- | ---------: | ---------: | ---------: |
+| Baseline          |     0.9061 |     1.1449 |      ~0.00 |
+| Linear Regression |     0.5332 |     0.7456 |     0.5758 |
+| Decision Tree     |     0.4332 |     0.6446 |     0.6829 |
+| **Random Forest** | **0.3268** | **0.5040** | **0.8062** |
+
+### 🏆 Final Model
+
+**Random Forest Regression** was selected as the final model because it achieved the best performance on the test set.
+
+```text
+R² = 0.8062
+RMSE = 0.5040
+MAE = 0.3268
+```
+
+This means the Random Forest model explains approximately **80.6% of the variance** in the target variable on the test data.
+
+---
+
+## ⚙️ Model Selection
+
+The models were compared using:
+
+* MAE
+* RMSE
+* R²
+* Training performance
+* Validation performance
+* Cross-validation
+* Overfitting behavior
+* Generalization performance
+
+Random Forest provided the best balance between predictive performance and generalization.
+
+---
+
+# 🧠 Important ML Concepts Practiced
+
+During model development, the following concepts were implemented and evaluated:
+
+* Train/test split
+* Baseline model
+* Regression metrics
+* Linear Regression
+* Decision Tree Regression
+* Random Forest Regression
+* KNN Regression
+* Feature scaling
+* Overfitting
+* Underfitting
+* Hyperparameter tuning
+* Cross-validation
+* Model comparison
+* Feature importance
+* Model serialization
+
+---
+
+# 🏗️ Production Architecture
 
 ```text
                     ┌──────────────────┐
@@ -50,51 +255,51 @@ The project focuses not only on model development but also on testing, container
                     │       ↓          │
                     │    ML Model      │
                     └──────────────────┘
-````
+```
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-* Machine Learning model for bike rental demand prediction
+* Bike rental demand prediction
+* Random Forest regression model
 * FastAPI REST API
-* Input validation using Pydantic
+* Pydantic input validation
 * Automated testing with pytest
 * Dockerized application
 * Multi-stage Docker build
 * GitHub Actions CI/CD
-* Docker image publishing to GitHub Container Registry
+* Docker image publishing to GHCR
 * AWS EC2 deployment
-* AWS Systems Manager (SSM) deployment
+* AWS Systems Manager (SSM)
 * GitHub Actions → AWS authentication using OIDC
-* Health-check endpoint
 * Production container restart policy
-* Automated deployment workflow
+* Health-check endpoint
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-### Machine Learning
+## Machine Learning
 
 * Python
 * Scikit-learn
 * Pandas
 * NumPy
 
-### API
+## API
 
 * FastAPI
 * Uvicorn
 * Pydantic
 
-### Testing
+## Testing
 
 * Pytest
 * FastAPI TestClient
 * HTTPX
 
-### DevOps / MLOps
+## DevOps / MLOps
 
 * Docker
 * GitHub Actions
@@ -106,7 +311,7 @@ The project focuses not only on model development but also on testing, container
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```text
 bike-demand-ml/
@@ -136,16 +341,16 @@ bike-demand-ml/
 
 ---
 
-## 🚀 Running Locally
+# 🚀 Running Locally
 
-### 1. Clone the Repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/nabilafzal19/Bike_Rental_Prediction.git
 cd Bike_Rental_Prediction
 ```
 
-### 2. Create a Virtual Environment
+## 2. Create Virtual Environment
 
 ```bash
 python -m venv .venv
@@ -157,13 +362,13 @@ Activate on Windows:
 .venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the API
+## 4. Run the API
 
 ```bash
 uvicorn app.main:app --reload
@@ -177,7 +382,7 @@ http://localhost:8000
 
 ---
 
-## 📚 API Documentation
+# 📚 API Documentation
 
 FastAPI automatically provides interactive API documentation.
 
@@ -195,7 +400,7 @@ http://localhost:8000/redoc
 
 ---
 
-## ❤️ Health Check
+# ❤️ Health Check
 
 The application provides a health-check endpoint:
 
@@ -213,7 +418,7 @@ Example response:
 
 ---
 
-## 🧪 Running Tests
+# 🧪 Running Tests
 
 Run all tests using:
 
@@ -230,15 +435,15 @@ The test suite validates:
 
 ---
 
-## 🐳 Docker
+# 🐳 Docker
 
-### Build the Production Image
+## Build Production Image
 
 ```bash
 docker build --target production -t bike-demand-api .
 ```
 
-### Run the Container
+## Run Container
 
 ```bash
 docker run -d \
@@ -248,7 +453,7 @@ docker run -d \
   bike-demand-api
 ```
 
-Test the API:
+Test:
 
 ```bash
 curl http://localhost:8000/health
@@ -256,7 +461,7 @@ curl http://localhost:8000/health
 
 ---
 
-## 🧪 Docker Test Image
+# 🧪 Docker Test Image
 
 The project uses a multi-stage Dockerfile to separate testing and production environments.
 
@@ -280,11 +485,9 @@ docker build --target production -t bike-demand-api .
 
 ---
 
-## 🔄 CI/CD Pipeline
+# 🔄 CI/CD Pipeline
 
 Every push or pull request to the `main` branch triggers GitHub Actions.
-
-The pipeline performs:
 
 ```text
 Push / Pull Request
@@ -314,7 +517,7 @@ Restart Application
 
 ---
 
-## 🔐 AWS Authentication
+# 🔐 AWS Authentication
 
 The deployment uses GitHub Actions OIDC authentication instead of storing long-lived AWS access keys.
 
@@ -334,7 +537,7 @@ This provides short-lived credentials and avoids storing permanent AWS access ke
 
 ---
 
-## ☁️ AWS Deployment
+# ☁️ AWS Deployment
 
 The application runs inside a Docker container on an AWS EC2 instance.
 
@@ -359,14 +562,14 @@ Docker Container
    ↓
 FastAPI
    ↓
-ML Model
+Random Forest Model
 ```
 
 ---
 
-## 🔒 Security Practices
+# 🔒 Security Practices
 
-The project implements several production-oriented security practices:
+The project implements production-oriented security practices:
 
 * AWS IAM roles
 * GitHub OIDC authentication
@@ -378,13 +581,14 @@ The project implements several production-oriented security practices:
 
 ---
 
-## 📊 MLOps Implementation
+# 📊 MLOps Implementation
 
-This project demonstrates practical MLOps concepts across the complete ML deployment lifecycle.
+This project demonstrates practical MLOps concepts across the ML deployment lifecycle.
 
 ### Model Layer
 
-* Machine Learning model training
+* Model training
+* Model evaluation
 * Model serialization
 * Model loading
 * Real-time inference
@@ -409,7 +613,7 @@ This project demonstrates practical MLOps concepts across the complete ML deploy
 * Automated testing
 * Docker image building
 * Docker image publishing
-* Automated cloud deployment
+* Automated deployment
 
 ### Cloud Infrastructure
 
@@ -421,16 +625,21 @@ This project demonstrates practical MLOps concepts across the complete ML deploy
 
 ---
 
-## 🎯 Learning Outcomes
+# 🎯 Learning Outcomes
 
 This project demonstrates practical knowledge of:
 
 ### Machine Learning
 
-* Training and serving an ML model
-* Model serialization
-* Model inference
-* Feature validation
+* Supervised learning
+* Regression
+* Model evaluation
+* Model comparison
+* Cross-validation
+* Hyperparameter tuning
+* Overfitting and underfitting
+* Ensemble learning
+* Random Forest
 
 ### Backend Engineering
 
@@ -438,6 +647,7 @@ This project demonstrates practical knowledge of:
 * Request validation
 * Error handling
 * API testing
+* ML model serving
 
 ### Docker
 
@@ -472,11 +682,20 @@ This project demonstrates practical knowledge of:
 
 ---
 
-## 📌 Project Status
+# 📌 Project Status
 
 ### Completed
 
-* [x] Machine Learning model
+* [x] Bike demand regression model
+* [x] Baseline model
+* [x] Linear Regression
+* [x] Decision Tree Regression
+* [x] Random Forest Regression
+* [x] KNN Regression
+* [x] Model evaluation
+* [x] Hyperparameter tuning
+* [x] Cross-validation
+* [x] Final model selection
 * [x] FastAPI API
 * [x] Pydantic validation
 * [x] Automated tests
@@ -492,11 +711,13 @@ This project demonstrates practical knowledge of:
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Nabil Afzal**
 
 Backend Developer | AI/ML Engineer
 
 ```
+
+**One important note:** I deliberately kept the README focused on what we **actually completed**, rather than adding things we haven't implemented. This version now tells a recruiter the complete story: **what the model predicts → which algorithms we tried → how we evaluated them → why Random Forest won → how we turned that model into a production API → how we deployed it.**
 ```
