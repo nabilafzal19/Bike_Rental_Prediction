@@ -63,13 +63,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      # // verify source
+
       - name: Verify source
         run: |
           echo "Commit: $GITHUB_SHA"
           echo "main.py from GitHub Actions:"
-          cat app/main.py      
+          cat app/main.py
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -82,19 +81,17 @@ jobs:
         run: |
           docker build \
             --target production \
-            -t ghcr.io/${{ github.repository_owner }}/bike-demand-ml:latest .
+            -t bike-demand-api:debug .
 
-      # verify docker image
       - name: Verify Docker image
         run: |
-          docker run --rm bike-demand-api cat app/main.py
+          docker images
+          docker run --rm bike-demand-api:debug cat app/main.py
 
       - name: Tag image
         run: |
-          docker tag bike-demand-api \
+          docker tag bike-demand-api:debug \
             ghcr.io/${{ github.repository_owner }}/bike-demand-ml:latest
-      
-    # End verification
 
       - name: Push image
         run: |
